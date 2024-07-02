@@ -6,8 +6,9 @@ import { useState, useEffect } from "react"
 import { signIn, signOut, useSession, getProviders} from 'next-auth/react'
 
 const Nav = () => {
-  const isUserLoggedIn = true
+  const {data: session} = useSession()
   const [providers, setProviders] = useState(null)
+  const [toggleDropdown, setToggleDropdown] = useState(false)
 
   useEffect(()=>{
     (async () => {
@@ -15,6 +16,11 @@ const Nav = () => {
       setProviders(response)
     })()
   }, [])
+
+  useEffect(()=>{
+    console.log('session data: ', session)
+    console.log('providers data: ', providers)
+  },[session, providers])
 
   return (
     <nav className="flex-between w-full mb-16 pt-3">
@@ -31,7 +37,7 @@ const Nav = () => {
 
       {/* Desktop Nav */}
       <div className="sm:flex hidden">
-        {isUserLoggedIn ? (
+        {session?.user ? (
           <div className="flex gap-3 md:gap-5">
             <Link href={'/create-promt'}
             className="black_btn"
@@ -49,7 +55,7 @@ const Nav = () => {
 
             <Link href={'/profile'}>
               <Image 
-                src={'/assets/images/logo.svg'}
+                src={session.user.image}
                 width={37}
                 height={37}
                 className="rounded-full"
@@ -74,6 +80,61 @@ const Nav = () => {
       </div>
 
       {/* Mobile Nav */}
+      <div className="sm:hidden flex relative">
+        {session?.user ? (
+          <div className="flex">
+              <Image 
+                src={session.user.image}
+                width={37}
+                height={37}
+                className="rounded-full"
+                alt="Profile"
+                onClick={()=>setToggleDropdown(prev => !prev)}
+              />
+
+              {toggleDropdown && 
+                <div className="dropdown">
+                  <Link 
+                    href={'/profile'}
+                    className="dropdown_link"
+                    onClick={()=>setToggleDropdown(prev => !prev)}
+                  >
+                    My Profile
+                  </Link>
+                  <Link 
+                    href={'/create-promt'}
+                    className="dropdown_link"
+                    onClick={()=>setToggleDropdown(prev => !prev)}
+                  >
+                    Create Promt
+                  </Link>
+                  <button 
+                    type="button"
+                    onClick={()=>{
+                      setToggleDropdown(prev => !prev)
+                      signOut()
+                    }}
+                    className="mt-5 w-full black_btn"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              }
+          </div>
+        ) : (
+        <>
+          {providers && Object.values(providers).map(provider => (
+              <button
+              type="button"
+              key={provider.name}
+              onClick={()=>signIn(provider.id)}
+              className="black_btn"
+              >
+                Sign In
+              </button>
+            ))}
+        </>)}
+      </div>
     </nav>
   )
 }
