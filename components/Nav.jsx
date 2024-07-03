@@ -29,17 +29,17 @@ const Nav = () => {
           src={'/assets/images/logo.svg'}
           width={30}
           height={30}
-          alt="Promtopia Logo"
+          alt="Promptopia Logo"
           className="object-contain"
           />
-          <p className="logo_text">Promtopia</p>
+          <p className="logo_text">Promptopia</p>
       </Link>
 
       {/* Desktop Nav */}
       <div className="sm:flex hidden">
         {session?.user ? (
           <div className="flex gap-3 md:gap-5">
-            <Link href={'/create-promt'}
+            <Link href={'/create-prompt'}
             className="black_btn"
             >
               Create Post
@@ -102,11 +102,11 @@ const Nav = () => {
                     My Profile
                   </Link>
                   <Link 
-                    href={'/create-promt'}
+                    href={'/create-prompt'}
                     className="dropdown_link"
                     onClick={()=>setToggleDropdown(prev => !prev)}
                   >
-                    Create Promt
+                    Create Prompt
                   </Link>
                   <button 
                     type="button"

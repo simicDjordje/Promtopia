@@ -3,8 +3,8 @@ import Provider from '@components/Provider'
 import '@styles/globals.css'
 
 export const metadata = {
-    title: 'Promtopia',
-    description: 'Discover & Share AI Promts'
+    title: 'Promptopia',
+    description: 'Discover & Share AI Prompts'
 }
 
 const RootLayout = ({children}) => {
