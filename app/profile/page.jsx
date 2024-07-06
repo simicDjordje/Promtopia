@@ -12,6 +12,7 @@ const ProfilePage = () => {
   const userProfileId = searchParams.get('user_id')
   const router = useRouter()
   const [isMyProfile, setIsMyProfile] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(()=>{
     if(!session && !userProfileId){
@@ -38,13 +39,11 @@ const ProfilePage = () => {
 
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
       <Profile 
         title={ isMyProfile ? 'My Profile' : posts[0]?.creator?.username }
         desc={ `Welcome to ${ isMyProfile ? 'your' : posts[0]?.creator?.username } personalized profile page`}
         data={posts}
       />
-    </Suspense>
   )
 }
 
