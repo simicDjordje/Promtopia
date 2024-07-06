@@ -53,7 +53,6 @@ const UpdatePrompt = () => {
     }
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
         <Form
             type="Edit"
             post={post}
@@ -61,8 +60,18 @@ const UpdatePrompt = () => {
             submiting={submiting}
             handleSubmit={updatePrompt}
         />
-        </Suspense>
     )
   }
   
-  export default UpdatePrompt
+
+  const UpdatePromptSuspense = () => (
+    <Suspense fallback={<div>Loading...</div>}>
+        <UpdatePrompt />
+    </Suspense>
+  )
+
+  export default UpdatePromptSuspense
+
+
+
+  
