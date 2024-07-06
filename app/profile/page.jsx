@@ -48,4 +48,10 @@ const ProfilePage = () => {
   )
 }
 
-export default ProfilePage
+const ProfilePageSuspense = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <ProfilePage />
+  </Suspense>
+)
+
+export default ProfilePageSuspense
