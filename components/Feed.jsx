@@ -4,21 +4,28 @@ import { useState, useEffect } from "react"
 import PromptCardList from "./PromptCardList"
 
 const Feed = () => {
-  const [searchText, setSearchText] = useState('')
   const [posts, setPosts] = useState([])
-
-  const handleSearchChange = (e) => {
-
-  }
+  const [filteredPosts, setFilteredPosts] = useState([])
+  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(()=>{
     (async ()=>{
-      const response = await fetch('/api/prompt')
-      const data = await response.json()
+      try{
+        const response = await fetch('/api/prompt')
+        const data = await response.json()
 
-      setPosts(data)
+        setPosts(data)
+      }catch(err){
+        console.log(err)
+      }
     })()
+    
   }, [])
+
+  useEffect(()=>{
+    const filteredPostsArray = posts.filter(post => post.creator.username.toLowerCase().includes(searchQuery.toLowerCase()) || post.tag.toLowerCase().includes(searchQuery.toLowerCase()))
+    setFilteredPosts(filteredPostsArray)
+  }, [searchQuery])
 
   return (
     <section className="feed">
@@ -26,14 +33,14 @@ const Feed = () => {
         <input 
           type="text" 
           placeholder="Search for a tag or username" 
-          value={searchText}
-          onChange={handleSearchChange}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           required
           className="search_input peer"
         />
       </form>
       <PromptCardList
-          data={posts}
+          data={searchQuery ? filteredPosts : posts}
           handleTagClick={()=>{}}
       />
     </section>
