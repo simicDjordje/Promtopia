@@ -12,7 +12,7 @@ const ProfilePage = () => {
   const userProfileId = searchParams.get('user_id')
   const router = useRouter()
   const [isMyProfile, setIsMyProfile] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(()=>{
     if(!session && !userProfileId){
@@ -32,11 +32,16 @@ const ProfilePage = () => {
         setPosts(data)
       }catch(err){
         console.log(err)
+      }finally{
+        setIsLoading(false)
       }
 
     })()
   }, [session, userProfileId])
 
+  if(isLoading){
+    return (<div>Loading data...</div>)
+  }
 
   return (
       <Profile 
