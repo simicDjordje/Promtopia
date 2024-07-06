@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import Profile from "@components/Profile"
 import { useSession } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation";
@@ -38,11 +38,13 @@ const ProfilePage = () => {
 
 
   return (
-    <Profile 
-      title={ isMyProfile ? 'My Profile' : posts[0]?.creator?.username }
-      desc={ `Welcome to ${ isMyProfile ? 'your' : posts[0]?.creator?.username } personalized profile page`}
-      data={posts}
-    />
+    <Suspense fallback={<div>Loading...</div>}>
+      <Profile 
+        title={ isMyProfile ? 'My Profile' : posts[0]?.creator?.username }
+        desc={ `Welcome to ${ isMyProfile ? 'your' : posts[0]?.creator?.username } personalized profile page`}
+        data={posts}
+      />
+    </Suspense>
   )
 }
 
